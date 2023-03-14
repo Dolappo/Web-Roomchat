@@ -1,0 +1,4 @@
+enum AuthCard{
+  login,
+  register
+}
