@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:web_groupchat/ui/screen/home_screen.dart';
 
 class GButton extends StatelessWidget {
   final String title;
@@ -23,13 +23,13 @@ class GButton extends StatelessWidget {
         padding: const EdgeInsets.all(18.0),
         child: isBusy
             ? const CircularProgressIndicator(
-          color: Colors.white,
-          strokeWidth: 3,
-        )
+                color: Colors.white,
+                strokeWidth: 3,
+              )
             : Text(
-          title,
-          // style: bodyStyle.copyWith(color: Colors.white),
-        ),
+                title,
+                style: fontStyle.copyWith(color: Colors.white, fontSize: 14),
+              ),
       ),
     );
   }

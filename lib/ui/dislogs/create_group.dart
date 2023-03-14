@@ -5,6 +5,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/ui/screen/home_view_model.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
+import '../../core/enum/chat_type.dart';
 import '../../setups/setup_dialog_ui.dart';
 
 class CreateGroupDialog extends StatelessWidget {
@@ -40,13 +41,30 @@ class CreateGroupDialog extends StatelessWidget {
                       maxLines: 1,
                     ),
                     const Gap(20),
-                    GButton(
-                      title: "Create",
-                      onPress: () async {
-                        await model.createGroup();
-                        completer(DialogResponse(confirmed: true));
-                      },
-                      isBusy: model.busy(model.createGroupDth),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DropdownButtonFormField(
+                              value: model.groupType,
+                              items: List.generate(
+                                  ChatType.values.length,
+                                  (index) => DropdownMenuItem(
+                                      value: ChatType.values[index],
+                                      child: Text(ChatType.values[index]
+                                          .capitalize()))),
+                              onChanged: (type) => model.onChangeType(type!)),
+                        ),
+                        Expanded(
+                          child: GButton(
+                            title: "Create",
+                            onPress: () async {
+                              await model.createGroup();
+                              completer(DialogResponse(confirmed: true));
+                            },
+                            isBusy: model.busy(model.createGroupDth),
+                          ),
+                        ),
+                      ],
                     )
                   ],
                 ),

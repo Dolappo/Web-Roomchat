@@ -18,7 +18,7 @@ class GroupRepo {
     return groupChats;
   }
 
-  Future<void> createGroup(GroupChatModel group, String id) async{
+  Future<void> createGroup(GroupChatModel group, String id) async {
     await _fstore.groupCollection.doc(id).set(group.toJson());
   }
 
@@ -26,13 +26,12 @@ class GroupRepo {
 
   Future<List<GroupChatModel>?> streamGroup(String user) async {
     print("Stream open");
-    groupStream = _fstore
-        .groupCollection
-    // .where("members", whereIn: [user])
+    groupStream = _fstore.groupCollection
+        .where("members", arrayContains: user)
         // .orderBy("sendTime")
         .snapshots()
         .map((event) {
-          print("Events from stream: ${event.docs.first}");
+      print("Events from stream: ${event.docs.first}");
       if (event.docs.isNotEmpty) {
         return event.docs.map((e) {
           GroupChatModel _chat = GroupChatModel.fromJson(e.data());

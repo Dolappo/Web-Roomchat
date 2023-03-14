@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_groupchat/ui/screen/home_screen.dart';
 
 class GTextField extends StatelessWidget {
   final String? hintText;
@@ -16,19 +17,19 @@ class GTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   const GTextField(
       {this.isBorder = true,
-        this.isEnabled = true,
-        this.toggleVisibility,
-        this.obscureText = false,
-        this.isPassword = false,
-        this.maxLines,
-        this.textInputAction,
-        this.enableSuggestions = false,
-        this.onChanged,
-        this.minLines,
-        this.hintText,
-        this.prefix,
-        this.controller,
-        Key? key})
+      this.isEnabled = true,
+      this.toggleVisibility,
+      this.obscureText = false,
+      this.isPassword = false,
+      this.maxLines,
+      this.textInputAction,
+      this.enableSuggestions = false,
+      this.onChanged,
+      this.minLines,
+      this.hintText,
+      this.prefix,
+      this.controller,
+      Key? key})
       : super(key: key);
 
   @override
@@ -39,27 +40,28 @@ class GTextField extends StatelessWidget {
           enabled: isEnabled,
           textInputAction: textInputAction,
           obscureText: obscureText,
+          style: fontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
-              disabledBorder:isBorder
+              disabledBorder: isBorder
                   ? OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade400),
-                borderRadius: BorderRadius.circular(10),
-              )
-                  : InputBorder.none ,
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(10),
+                    )
+                  : InputBorder.none,
               enabledBorder: isBorder
                   ? OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade400),
-                borderRadius: BorderRadius.circular(10),
-              )
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(10),
+                    )
                   : InputBorder.none,
               focusedBorder: isBorder
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey.shade400),
-              )
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    )
                   : InputBorder.none,
               hintText: hintText,
-              // hintStyle: bodyStyle,
+              hintStyle: fontStyle.copyWith(fontSize: 12),
               prefixIcon: isPassword ? null : prefix,
               contentPadding: const EdgeInsets.all(20)),
           controller: controller,
@@ -70,14 +72,14 @@ class GTextField extends StatelessWidget {
         ),
         isPassword
             ? Positioned(
-          right: 5,
-          top: 5,
-          child: IconButton(
-            onPressed: toggleVisibility,
-            icon: Icon(
-                !obscureText ? Icons.visibility_off : Icons.visibility),
-          ),
-        )
+                right: 5,
+                top: 5,
+                child: IconButton(
+                  onPressed: toggleVisibility,
+                  icon: Icon(
+                      !obscureText ? Icons.visibility_off : Icons.visibility),
+                ),
+              )
             : SizedBox()
       ],
     );

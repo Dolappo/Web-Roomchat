@@ -6,6 +6,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/app/app_setup.locator.dart';
 import 'package:web_groupchat/core/enum/chat_type.dart';
 import 'package:web_groupchat/core/enum/ui_enums/dialog_type.dart';
+import 'package:web_groupchat/core/model/user_model.dart';
 import 'package:web_groupchat/core/services/group_service.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
 
@@ -26,6 +27,29 @@ class HomeViewModel extends BaseViewModel {
 
   HomeViewModel() {
     _group.openGroupStream();
+  }
+
+  bool viewGroupDetails = false;
+
+  void closeGroupDetails() {
+    viewGroupDetails = false;
+    notifyListeners();
+  }
+
+  void openGroupDetails() {
+    viewGroupDetails = true;
+    notifyListeners();
+  }
+
+  UserModel? get user => _user.user;
+
+  ChatType _groupType = ChatType.values.first;
+
+  ChatType get groupType => _groupType;
+
+  onChangeType(ChatType type) {
+    _groupType = type;
+    notifyListeners();
   }
 
   GroupChatModel? _selectedGroup;
@@ -52,6 +76,10 @@ class HomeViewModel extends BaseViewModel {
         resumeSignal(group, true);
       }
       chatStreams[group.id!] = _chat.openChatStream(group.id!).listen((event) {
+        print("Group ID${group.id}");
+        if (event.isEmpty) {
+          currChats = [];
+        }
         currChats = event;
         chatSnapshots[group.id!] = event;
         notifyListeners();
@@ -76,12 +104,24 @@ class HomeViewModel extends BaseViewModel {
 
   Stream<List<GroupChatModel>>? get groupStream => _group.groupStream;
 
-  ChatType _groupType = ChatType.public;
-
-  ChatType get groupType => _groupType;
+  // ChatType _groupType = ChatType.public;
+  //
+  // ChatType get groupType => _groupType;
 
   void setChatType(ChatType type) {
     _groupType = type;
+    notifyListeners();
+  }
+
+  bool viewProfile = false;
+
+  void onViewProfile() {
+    viewProfile = true;
+    notifyListeners();
+  }
+
+  void closeProfile() {
+    viewProfile = false;
     notifyListeners();
   }
 
