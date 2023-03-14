@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web_groupchat/core/services/firestore_service.dart';
 
-import '../../app/app_setup.locator.dart';
 import '../model/chat_model.dart';
 
 class GroupRepo {

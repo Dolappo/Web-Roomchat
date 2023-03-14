@@ -3,7 +3,6 @@ import 'package:web_groupchat/core/services/user_service.dart';
 
 import '../../app/app_setup.locator.dart';
 import '../model/chat_model.dart';
-import '../model/user_model.dart';
 
 class GroupService {
   final _gRepo = GroupRepo();
