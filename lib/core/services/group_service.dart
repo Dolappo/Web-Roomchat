@@ -23,6 +23,8 @@ class GroupService {
     _selectedGroup = group;
   }
 
+  bool get isAdmin => _selectedGroup!.admin! == _user.user!.email!;
+
   set groupName(String gName) {
     _groupName = gName;
   }

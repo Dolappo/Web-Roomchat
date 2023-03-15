@@ -22,6 +22,8 @@ class HomeViewModel extends BaseViewModel {
 
   final String createGroupDth = "createGroup";
   final String addToGroupDth = "addToGroup";
+  final String joinGroupDth = "joinGroup";
+  final String leaveGroupDth = "leaveGroup";
   final Map<String, StreamSubscription<List<ChatModel>>> chatStreams = {};
   final Map<String, List<ChatModel>> chatSnapshots = {};
   List<ChatModel> currChats = [];
@@ -30,6 +32,8 @@ class HomeViewModel extends BaseViewModel {
     _group.openGroupStream();
     getPublicGroups();
   }
+
+  bool get isAmin => _group.isAdmin;
 
   GroupChatModel get selGroup => _group.selectedGroup!;
 
@@ -65,6 +69,10 @@ class HomeViewModel extends BaseViewModel {
     chatSnapshots[_selectedGroup!.id!] = currChats;
     if (!justPausing) currChats = chatSnapshots[group.id!] ?? [];
     notifyListeners();
+  }
+
+  bool isAMember(List<String> members) {
+    return members.contains(_user.user!.email!);
   }
 
   void onSelectGroup(GroupChatModel group) {
@@ -173,6 +181,27 @@ class HomeViewModel extends BaseViewModel {
           _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!),
           busyObject: addToGroupDth);
     }
+  }
+
+  Future<void> joinGroup() async {
+    _selectedGroup!.members!.add(_user.user!.email!);
+    await runBusyFuture(
+        _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!),
+        busyObject: joinGroupDth);
+    _publicGroups = [];
+    getPublicGroups();
+    notifyListeners();
+  }
+
+  Future<void> leaveGroup() async {
+    _selectedGroup!.members!
+        .removeWhere((element) => element == _user.user!.email!);
+    await runBusyFuture(
+        _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!));
+    _selectedGroup = null;
+    _publicGroups = [];
+    notifyListeners();
+    getPublicGroups();
   }
 
   Future<void> createGroup() async {
