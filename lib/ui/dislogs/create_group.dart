@@ -21,6 +21,9 @@ class CreateGroupDialog extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 300.0, vertical: 200),
       child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: ViewModelBuilder<HomeViewModel>.reactive(
             viewModelBuilder: () => HomeViewModel(),
             builder: (context, model, _) {
@@ -60,7 +63,9 @@ class CreateGroupDialog extends StatelessWidget {
                             title: "Create",
                             onPress: () async {
                               await model.createGroup();
-                              completer(DialogResponse(confirmed: true));
+                              completer(DialogResponse(
+                                confirmed: true,
+                              ));
                             },
                             isBusy: model.busy(model.createGroupDth),
                           ),

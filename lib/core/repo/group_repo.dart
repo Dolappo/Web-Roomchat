@@ -21,6 +21,12 @@ class GroupRepo {
     await _fstore.groupCollection.doc(id).set(group.toJson());
   }
 
+  Future<void> addUserToGroup(List<String> members, String id) async {
+    await _fstore.groupCollection
+        .doc(id)
+        .set({"members": members}, SetOptions(merge: true));
+  }
+
   Stream<List<GroupChatModel>>? groupStream;
 
   Future<List<GroupChatModel>?> streamGroup(String user) async {

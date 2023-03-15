@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -166,9 +168,21 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
                 viewModel.selectedGroup!.desc!,
                 style: fontStyle.copyWith(fontSize: 14),
               ),
-              trailing: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {},
+              trailing: GestureDetector(
+                onTap: viewModel.showNewUserDialog,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      "Add Member",
+                      style: fontStyle.copyWith(fontSize: 16),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -176,57 +190,65 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
             height: 10,
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Builder(builder: (context) {
-                  if (viewModel.currChats.isNotEmpty) {
-                    return Expanded(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: viewModel.currChats.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ChatCard(
-                                model: viewModel.currChats[index],
-                                isUser: viewModel.currChats[index].sender ==
-                                    viewModel.currentUser,
-                              ),
-                            );
-                          }),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(
-                        "Start a chat",
-                        style: fontStyle.copyWith(fontSize: 18),
-                      ),
-                    );
-                  }
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 10),
-                  child: SizedBox(
-                    child: Stack(
-                      children: [
-                        GTextField(
-                          hintText: "Message...",
-                          controller: viewModel.chatController,
+            child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    opacity: 0.05,
+                    image: AssetImage("assets/bg.jpg"),
+                    fit: BoxFit.cover),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Builder(builder: (context) {
+                    if (viewModel.currChats.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: viewModel.currChats.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ChatCard(
+                                  model: viewModel.currChats[index],
+                                  isUser: viewModel.currChats[index].sender ==
+                                      viewModel.currentUser,
+                                ),
+                              );
+                            }),
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          "Start a chat",
+                          style: fontStyle.copyWith(fontSize: 18),
                         ),
-                        Positioned(
-                            right: 5,
-                            bottom: 5,
-                            child: IconButton(
-                                onPressed: viewModel.sendMessage,
-                                icon: const Icon(Icons.send))),
-                      ],
+                      );
+                    }
+                  }),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 10),
+                    child: SizedBox(
+                      child: Stack(
+                        children: [
+                          GTextField(
+                            hintText: "Message...",
+                            controller: viewModel.chatController,
+                          ),
+                          Positioned(
+                              right: 5,
+                              bottom: 5,
+                              child: IconButton(
+                                  onPressed: viewModel.sendMessage,
+                                  icon: const Icon(Icons.send))),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           )
         ],
@@ -250,28 +272,32 @@ class GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: ListTile(
-        onTap: onTap,
-        leading: CircleAvatar(),
-        title: Text(
-          model.name!,
-          style: fontStyle.copyWith(fontSize: 16),
+    return Column(
+      children: [
+        ListTile(
+          onTap: onTap,
+          leading: CircleAvatar(),
+          title: Text(
+            model.name!,
+            style: fontStyle.copyWith(fontSize: 16),
+          ),
+          subtitle: Text(
+            model.lastMssg ?? "-",
+            style: fontStyle.copyWith(fontSize: 16),
+          ),
+          trailing: Column(
+            children: [
+              Text(
+                model.lastUpdatedTime?.toTime() ??
+                    model.created?.toTime() ??
+                    "-",
+                style: fontStyle.copyWith(fontSize: 12),
+              ),
+            ],
+          ),
         ),
-        subtitle: Text(
-          model.lastMssg ?? "-",
-          style: fontStyle.copyWith(fontSize: 16),
-        ),
-        trailing: Column(
-          children: [
-            Text(
-              model.lastUpdatedTime?.toTime() ?? model.created?.toTime() ?? "-",
-              style: fontStyle.copyWith(fontSize: 12),
-            ),
-          ],
-        ),
-      ),
+        Divider(),
+      ],
     );
   }
 }
@@ -284,11 +310,13 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context, viewModel) {
+    Color _randomColor =
+        Colors.primaries[Random().nextInt(Colors.primaries.length)];
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
-            color: isUser ? Colors.green.shade800 : Colors.black54,
+            color: isUser ? Colors.green.shade800 : Colors.blueGrey.shade800,
             borderRadius: BorderRadius.only(
               topLeft: isUser ? const Radius.circular(15) : Radius.zero,
               bottomLeft: const Radius.circular(15),
@@ -298,6 +326,15 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+            if (!isUser)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Text(
+                  model.sender!,
+                  textAlign: TextAlign.start,
+                  style: fontStyle.copyWith(fontSize: 12, color: _randomColor),
+                ),
+              ),
             Text(
               model.text!,
               style: fontStyle.copyWith(fontSize: 14, color: Colors.white),
@@ -306,7 +343,7 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
             Text(
               model.time!.toTime(),
               style: fontStyle.copyWith(fontSize: 8, color: Colors.white54),
-              textAlign: TextAlign.right,
+              textAlign: TextAlign.end,
             )
           ],
         ),
@@ -326,15 +363,15 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
         Container(
           height: 65,
           padding: EdgeInsets.all(10),
-          color: Colors.grey.shade200,
+          // color: Colors.grey.shade200,
           child: Row(
             children: [
               IconButton(
                   onPressed: viewModel.closeGroupDetails,
-                  icon: Icon(Icons.clear)),
+                  icon: const Icon(Icons.clear)),
               Text(
                 "Group Details",
-                style: fontStyle,
+                style: fontStyle.copyWith(fontSize: 18),
               )
             ],
           ),
@@ -391,31 +428,53 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
                   Row(
                     children: [
                       Text(
-                        "Description:",
+                        "Description: ",
                         style: fontStyle.copyWith(
                             color: Colors.green.shade800, fontSize: 16),
                       ),
-                      Text(
-                        viewModel.selectedGroup!.desc!,
-                        style: fontStyle.copyWith(fontSize: 16),
+                      Expanded(
+                        child: Text(
+                          viewModel.selectedGroup!.desc!,
+                          style: fontStyle.copyWith(fontSize: 16),
+                        ),
                       )
                     ],
                   ),
+                  Divider(),
                   Gap(15),
                   Text(
                     "Members",
                     style: fontStyle.copyWith(
                         color: Colors.green.shade800, fontSize: 18),
                   ),
-                  Divider(),
                   Gap(10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: List.generate(
                         viewModel.selectedGroup!.members!.length,
-                        (index) => Text(
-                              viewModel.selectedGroup!.members![index],
-                              style: fontStyle.copyWith(fontSize: 16),
+                        (index) => Row(
+                              children: [
+                                Text(
+                                  viewModel.selectedGroup!.members![index],
+                                  style: fontStyle.copyWith(fontSize: 16),
+                                ),
+                                if (viewModel.selectedGroup!.admin ==
+                                    viewModel.selectedGroup!.members![index])
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(color: Colors.grey)),
+                                    padding: EdgeInsets.all(8),
+                                    margin: EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      "Admin",
+                                      style: fontStyle.copyWith(
+                                          color: Colors.green.shade800,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  )
+                              ],
                             )),
                   )
                 ],

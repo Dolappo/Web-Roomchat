@@ -21,6 +21,7 @@ class HomeViewModel extends BaseViewModel {
   final _chat = locator<ChatService>();
 
   final String createGroupDth = "createGroup";
+  final String addToGroupDth = "addToGroup";
   final Map<String, StreamSubscription<List<ChatModel>>> chatStreams = {};
   final Map<String, List<ChatModel>> chatSnapshots = {};
   List<ChatModel> currChats = [];
@@ -28,6 +29,8 @@ class HomeViewModel extends BaseViewModel {
   HomeViewModel() {
     _group.openGroupStream();
   }
+
+  GroupChatModel get selGroup => _group.selectedGroup!;
 
   bool viewGroupDetails = false;
 
@@ -87,6 +90,7 @@ class HomeViewModel extends BaseViewModel {
     }
     // _chat.openChatStream(selectedGroup!.id!);
     _selectedGroup = group;
+    _group.selectGroup = group;
     notifyListeners();
   }
 
@@ -139,6 +143,27 @@ class HomeViewModel extends BaseViewModel {
       variant: DialogType.createGroup,
       barrierDismissible: true,
     );
+  }
+
+  TextEditingController newUserController = TextEditingController();
+
+  void showNewUserDialog() {
+    _dialog.showCustomDialog(
+        variant: DialogType.addMember, barrierDismissible: true);
+  }
+
+  Future<void> addToGroup() async {
+    _selectedGroup = selGroup;
+    if (_selectedGroup == null) {
+      print("The selected group is null");
+    } else {
+      print("Existing List: ${_selectedGroup!.members!.toString()}");
+      _selectedGroup!.members!.add(newUserController.text);
+      print("Updated List: ${_selectedGroup!.members!.toString()}");
+      await runBusyFuture(
+          _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!),
+          busyObject: addToGroupDth);
+    }
   }
 
   Future<void> createGroup() async {

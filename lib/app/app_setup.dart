@@ -1,4 +1,3 @@
-
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/core/services/chat_service.dart';
@@ -8,8 +7,7 @@ import 'package:web_groupchat/ui/screen/home_screen.dart';
 
 import '../core/services/auth_service.dart';
 import '../core/services/group_service.dart';
-
-
+import '../ui/screen/home_view_model.dart';
 
 @StackedApp(
   routes: [
@@ -25,11 +23,12 @@ import '../core/services/group_service.dart';
     LazySingleton(classType: UserService),
     LazySingleton(classType: GroupService),
     LazySingleton(classType: ChatService),
+    LazySingleton(classType: HomeViewModel),
     // LazySingleton(classType: FireStorageService),
     // LazySingleton(classType: LocalStorage),
     // LazySingleton(classType: ImagePickerService),
     // LazySingleton(classType: ChatService),
-   ],
+  ],
   logger: StackedLogger(),
 )
 class $AppSetup {}

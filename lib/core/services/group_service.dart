@@ -11,6 +11,14 @@ class GroupService {
 
   String _groupName = "";
 
+  GroupChatModel? _selectedGroup;
+
+  GroupChatModel? get selectedGroup => _selectedGroup;
+
+  set selectGroup(GroupChatModel group) {
+    _selectedGroup = group;
+  }
+
   set groupName(String gName) {
     _groupName = gName;
   }
@@ -36,6 +44,10 @@ class GroupService {
     group.id = groupId;
     group.admin = _user.user!.email!;
     await _gRepo.createGroup(group, groupId);
+  }
+
+  Future<void> addUserToGroup(List<String> members, String id) async {
+    _gRepo.addUserToGroup(members, id);
   }
 
   String get groupId {
