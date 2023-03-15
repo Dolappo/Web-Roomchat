@@ -1,20 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web_groupchat/core/services/firestore_service.dart';
 
+import '../enum/chat_type.dart';
 import '../model/chat_model.dart';
 
 class GroupRepo {
   final _fstore = FirestoreService();
 
-  Future<List<GroupChatModel>?> getUserGroups(String user) async {
-    List<GroupChatModel> groupChats = [];
+  Future<List<GroupChatModel>?> getPublicGroups(String currentUser) async {
     QuerySnapshot<Map<String, dynamic>> snapshot =
-        await _fstore.groupCollection.where("members", whereIn: [user]).get();
-    groupChats = snapshot.docs.map((e) {
+        await _fstore.groupCollection.where("type", isEqualTo: "public").get();
+
+    return snapshot.docs
+        .where((element) => !(element["members"] as List).contains(currentUser))
+        .map((e) {
       GroupChatModel group = GroupChatModel.fromJson(e.data());
       return group;
     }).toList();
-    return groupChats;
   }
 
   Future<void> createGroup(GroupChatModel group, String id) async {

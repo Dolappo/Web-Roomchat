@@ -7,7 +7,11 @@ import '../model/chat_model.dart';
 class GroupService {
   final _gRepo = GroupRepo();
   final _user = locator<UserService>();
-  List<GroupChatModel> _groups = [];
+  // List<GroupChatModel>? _groups;
+
+  // GroupService() {
+  //   getGroups();
+  // }
 
   String _groupName = "";
 
@@ -25,7 +29,7 @@ class GroupService {
 
   Stream<List<GroupChatModel>>? get groupStream => _gRepo.groupStream;
 
-  List<GroupChatModel> get groups => _groups;
+  // List<GroupChatModel>? get publicGroups => _groups;
 
   // GroupService(){
   //   openGroupStream();
@@ -36,8 +40,9 @@ class GroupService {
     await _gRepo.streamGroup(_user.user!.email!);
   }
 
-  void getGroups() async {
-    _groups = (await _gRepo.getUserGroups(_user.user!.email!))!;
+  Future<List<GroupChatModel>?> getGroups() async {
+    return await _gRepo.getPublicGroups(_user.user!.email!);
+    // print("Get groups ${_groups?.first.name}");
   }
 
   Future<void> createGroup(GroupChatModel group) async {

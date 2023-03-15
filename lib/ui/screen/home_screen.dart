@@ -84,63 +84,112 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
       ),
       Gap(5),
       Expanded(
-        child: Column(
-          children: [
-            StreamBuilder<List<GroupChatModel>>(
-                stream: viewModel.groupStream,
-                builder: (context, snapshot) {
-                  print(snapshot.data?.first.created);
-                  if (snapshot.data != null) {
-                    if (snapshot.hasData) {
-                      List<GroupChatModel> data = snapshot.data!;
-                      return ListView.builder(
-                          itemCount: data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10.0),
-                              child: GroupCard(
-                                onTap: () =>
-                                    viewModel.onSelectGroup(data[index]),
-                                model: data[index],
-                              ),
-                            );
-                          });
-                    } else {
-                      return Expanded(
-                        child: Center(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 30.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "Oops! you do not belong to a Group Chat",
-                                  textAlign: TextAlign.center,
-                                  style: fontStyle.copyWith(fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  } else {
-                    return Text(
-                      "Oops! you do not belong to a Group Chat",
-                      textAlign: TextAlign.center,
-                      style: fontStyle.copyWith(fontSize: 16),
-                    );
-                  }
-                }),
-            Gap(20),
-            GButton(
-              title: "Create Group",
-              onPress: viewModel.showCreateDialog,
+        child: SizedBox(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    children: [
+                      StreamBuilder<List<GroupChatModel>>(
+                          stream: viewModel.groupStream,
+                          builder: (context, snapshot) {
+                            print(snapshot.data?.first.created);
+                            if (snapshot.data != null) {
+                              if (snapshot.hasData) {
+                                List<GroupChatModel> data = snapshot.data!;
+                                return Column(
+                                  children: List.generate(data.length, (index) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10.0),
+                                      child: GroupCard(
+                                        onTap: () => viewModel
+                                            .onSelectGroup(data[index]),
+                                        model: data[index],
+                                      ),
+                                    );
+                                  }),
+                                );
+                              } else {
+                                return Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            "Oops! you do not belong to a Group Chat",
+                                            textAlign: TextAlign.center,
+                                            style: fontStyle.copyWith(
+                                                fontSize: 16),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else {
+                              return Text(
+                                "Oops! you do not belong to a Group Chat",
+                                textAlign: TextAlign.center,
+                                style: fontStyle.copyWith(fontSize: 16),
+                              );
+                            }
+                          }),
+                      Gap(20),
+                      GButton(
+                        title: "Create Group",
+                        onPress: viewModel.showCreateDialog,
+                      ),
+                    ],
+                  ),
+                  Gap(10),
+                  Text(
+                    "Public Groups",
+                    style: fontStyle.copyWith(
+                        color: Colors.green.shade800,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Divider(),
+                  Gap(5),
+                  Column(
+                    children:
+                        List.generate(viewModel.publicGroups.length, (index) {
+                      if (viewModel.publicGroups.isNotEmpty) {
+                        return GroupCard(model: viewModel.publicGroups[index]);
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }),
+                  )
+                  // ListView.builder(
+                  //     shrinkWrap: true,
+                  //     itemCount: viewModel.publicGroups.length,
+                  //     itemBuilder: (context, index) {
+                  //       if (viewModel.publicGroups.isNotEmpty) {
+                  //         return GroupCard(model: viewModel.publicGroups[index]);
+                  //       } else {
+                  //         return const Center(
+                  //           child: CircularProgressIndicator(),
+                  //         );
+                  //       }
+                  //     })
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       )
     ]);

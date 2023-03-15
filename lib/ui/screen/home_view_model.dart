@@ -28,6 +28,7 @@ class HomeViewModel extends BaseViewModel {
 
   HomeViewModel() {
     _group.openGroupStream();
+    getPublicGroups();
   }
 
   GroupChatModel get selGroup => _group.selectedGroup!;
@@ -136,7 +137,15 @@ class HomeViewModel extends BaseViewModel {
 
   String get username => _user.user?.username ?? "";
 
-  List<GroupChatModel> get groups => _group.groups;
+  List<GroupChatModel> get publicGroups => _publicGroups;
+
+  List<GroupChatModel> _publicGroups = [];
+
+  void getPublicGroups() async {
+    _publicGroups = (await _group.getGroups())!;
+    print("Public Groupssss ${_publicGroups.first.name}");
+    notifyListeners();
+  }
 
   void showCreateDialog() async {
     await _dialog.showCustomDialog(
