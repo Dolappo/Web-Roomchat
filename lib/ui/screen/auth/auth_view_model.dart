@@ -16,7 +16,7 @@ class AuthViewModel extends BaseViewModel {
   final _nav = locator<NavigationService>();
   final String busyIdt = "Busy";
 
-  bool isVisible = false;
+  bool isVisible = true;
 
   void toggleVisibility() {
     isVisible = !isVisible;

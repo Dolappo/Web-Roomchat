@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
 import 'package:web_groupchat/ui/screen/auth/auth_view_model.dart';
+import 'package:web_groupchat/ui/screen/home_screen.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
 
@@ -13,32 +14,50 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
-        viewModelBuilder: ()=> AuthViewModel(),
+        viewModelBuilder: () => AuthViewModel(),
         builder: (context, model, _) {
           return Scaffold(
-            body: Center(
-              child: SizedBox(
-                height: 500,
-                width: 500,
-                child: Card(
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    opacity: 0.05,
+                    image: AssetImage("assets/bg.jpg"),
+                    fit: BoxFit.cover),
+              ),
+              // padding: EdgeInsets.symmetric(horizontal: 120),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    model.currentPage == AuthCard.register
+                        ? "Create an Account"
+                        : "Welcome Back",
+                    style: fontStyle.copyWith(
+                        color: Colors.green.shade800,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Gap(5),
+                  SizedBox(
+                    width: 500,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Visibility(
                           visible: model.currentPage == AuthCard.register,
                           child: GTextField(
                             hintText: "Username",
-                            controller: model.usernameController ,
+                            controller: model.usernameController,
                           ),
                         ),
                         Gap(10),
                         GTextField(
                           hintText: "Email",
-                          controller: model.emailController ,
+                          controller: model.emailController,
                         ),
                         const Gap(10),
                         GTextField(
@@ -49,42 +68,54 @@ class AuthScreen extends StatelessWidget {
                           toggleVisibility: model.toggleVisibility,
                         ),
                         const Gap(20),
-                          Visibility(
-                            visible: model.currentPage==AuthCard.register,
-                            child: GTextField(
-                              hintText: "Password",
-                              obscureText: model.isVisible,
-                              isPassword: true,
-                              controller: model.confirmPasswordController,
-                              toggleVisibility: model.toggleVisibility,
-                            ),
+                        Visibility(
+                          visible: model.currentPage == AuthCard.register,
+                          child: GTextField(
+                            hintText: "Password",
+                            obscureText: model.isVisible,
+                            isPassword: true,
+                            controller: model.confirmPasswordController,
+                            toggleVisibility: model.toggleVisibility,
                           ),
+                        ),
                         const Gap(10),
                         GButton(
-                            title:model.currentPage==AuthCard.login? "Login": "Register",
-                            onPress: model.currentPage== AuthCard.login?model.login:model.register,
-                            isBusy: model.busy(model.busyIdt)
-                        ),
+                            title: model.currentPage == AuthCard.login
+                                ? "Login"
+                                : "Register",
+                            onPress: model.currentPage == AuthCard.login
+                                ? model.login
+                                : model.register,
+                            isBusy: model.busy(model.busyIdt)),
                         Gap(10),
-                        Visibility(
-                            visible: model.currentPage==AuthCard.login,
-                        replacement: GestureDetector(
-                          child: const Text("Login"),
-                          onTap: ()=> model.setPage(AuthCard.login),
-                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Visibility(
+                            visible: model.currentPage == AuthCard.login,
+                            replacement: GestureDetector(
+                              child: Text(
+                                "Login here",
+                                style: fontStyle.copyWith(
+                                    color: Colors.green.shade800, fontSize: 16),
+                              ),
+                              onTap: () => model.setPage(AuthCard.login),
+                            ),
                             child: GestureDetector(
-                          onTap:()=> model.setPage(AuthCard.register),
-                          child: const Text("Register here"),
-                        ),
+                              onTap: () => model.setPage(AuthCard.register),
+                              child: Text("Register here",
+                                  style: fontStyle.copyWith(
+                                      color: Colors.green.shade800,
+                                      fontSize: 16)),
+                            ),
+                          ),
                         )
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

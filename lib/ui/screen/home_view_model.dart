@@ -21,13 +21,21 @@ class HomeViewModel extends BaseViewModel {
   final _chat = locator<ChatService>();
 
   final String createGroupDth = "createGroup";
+  final String addToGroupDth = "addToGroup";
+  final String joinGroupDth = "joinGroup";
+  final String leaveGroupDth = "leaveGroup";
   final Map<String, StreamSubscription<List<ChatModel>>> chatStreams = {};
   final Map<String, List<ChatModel>> chatSnapshots = {};
   List<ChatModel> currChats = [];
 
   HomeViewModel() {
     _group.openGroupStream();
+    getPublicGroups();
   }
+
+  bool get isAmin => _group.isAdmin;
+
+  GroupChatModel get selGroup => _group.selectedGroup!;
 
   bool viewGroupDetails = false;
 
@@ -63,6 +71,10 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  bool isAMember(List<String> members) {
+    return members.contains(_user.user!.email!);
+  }
+
   void onSelectGroup(GroupChatModel group) {
     print("Chat Snapshots: $chatSnapshots");
     print("Chat Streams: $chatStreams");
@@ -87,6 +99,7 @@ class HomeViewModel extends BaseViewModel {
     }
     // _chat.openChatStream(selectedGroup!.id!);
     _selectedGroup = group;
+    _group.selectGroup = group;
     notifyListeners();
   }
 
@@ -132,13 +145,63 @@ class HomeViewModel extends BaseViewModel {
 
   String get username => _user.user?.username ?? "";
 
-  List<GroupChatModel> get groups => _group.groups;
+  List<GroupChatModel> get publicGroups => _publicGroups;
+
+  List<GroupChatModel> _publicGroups = [];
+
+  void getPublicGroups() async {
+    _publicGroups = (await _group.getGroups())!;
+    print("Public Groupssss ${_publicGroups.first.name}");
+    notifyListeners();
+  }
 
   void showCreateDialog() async {
     await _dialog.showCustomDialog(
       variant: DialogType.createGroup,
       barrierDismissible: true,
     );
+  }
+
+  TextEditingController newUserController = TextEditingController();
+
+  void showNewUserDialog() {
+    _dialog.showCustomDialog(
+        variant: DialogType.addMember, barrierDismissible: true);
+  }
+
+  Future<void> addToGroup() async {
+    _selectedGroup = selGroup;
+    if (_selectedGroup == null) {
+      print("The selected group is null");
+    } else {
+      print("Existing List: ${_selectedGroup!.members!.toString()}");
+      _selectedGroup!.members!.add(newUserController.text);
+      print("Updated List: ${_selectedGroup!.members!.toString()}");
+      await runBusyFuture(
+          _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!),
+          busyObject: addToGroupDth);
+    }
+  }
+
+  Future<void> joinGroup() async {
+    _selectedGroup!.members!.add(_user.user!.email!);
+    await runBusyFuture(
+        _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!),
+        busyObject: joinGroupDth);
+    _publicGroups = [];
+    getPublicGroups();
+    notifyListeners();
+  }
+
+  Future<void> leaveGroup() async {
+    _selectedGroup!.members!
+        .removeWhere((element) => element == _user.user!.email!);
+    await runBusyFuture(
+        _group.addUserToGroup(_selectedGroup!.members!, _selectedGroup!.id!));
+    _selectedGroup = null;
+    _publicGroups = [];
+    notifyListeners();
+    getPublicGroups();
   }
 
   Future<void> createGroup() async {

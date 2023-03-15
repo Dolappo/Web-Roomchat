@@ -16,6 +16,7 @@ import '../core/services/auth_service.dart';
 import '../core/services/chat_service.dart';
 import '../core/services/group_service.dart';
 import '../core/services/user_service.dart';
+import '../ui/screen/home_view_model.dart';
 
 final locator = StackedLocator.instance;
 
@@ -36,4 +37,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => GroupService());
   locator.registerLazySingleton(() => ChatService());
+  locator.registerLazySingleton(() => HomeViewModel());
 }
