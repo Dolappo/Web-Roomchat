@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:web_groupchat/core/model/chat.dart';
 import 'package:web_groupchat/core/repo/group_repo.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
 
@@ -53,7 +54,7 @@ class GroupService {
     _gRepo.addUserToGroup(members, id);
   }
 
-  Future<void> updateGroupDp(String url, id) async{
+  Future<void> updateGroupDp(String url, id) async {
     await _gRepo.updateGroupDp(url, id);
   }
 
@@ -63,6 +64,10 @@ class GroupService {
       _groupUrl = url;
       return _groupUrl;
     }
+  }
+
+  Future<void> updateLastMessage(ChatModel chat, String id) async {
+    await _gRepo.setLastMessage(chat, id);
   }
 
   String get groupId {

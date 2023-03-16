@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
 import 'package:web_groupchat/ui/screen/auth/auth_view_model.dart';
-import 'package:web_groupchat/ui/screen/home_screen.dart';
+import 'package:web_groupchat/ui/screen/home/home_screen.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
 

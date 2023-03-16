@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_groupchat/ui/screen/home_screen.dart';
+import 'package:web_groupchat/ui/screen/home/home_screen.dart';
 
 class GButton extends StatelessWidget {
   final String title;

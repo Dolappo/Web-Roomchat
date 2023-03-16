@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:web_groupchat/ui/screen/home_view_model.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
 
 import '../../core/enum/chat_type.dart';
 import '../../setups/setup_dialog_ui.dart';
+import '../screen/home/home_view_model.dart';
 
 class CreateGroupDialog extends StatelessWidget {
   final DialogRequest request;

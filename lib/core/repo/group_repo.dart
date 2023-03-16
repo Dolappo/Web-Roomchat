@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:web_groupchat/core/model/chat.dart';
 import 'package:web_groupchat/core/services/firestore_service.dart';
 
 import '../enum/chat_type.dart';
@@ -56,5 +57,13 @@ class GroupRepo {
         return [];
       }
     });
+  }
+
+  Future<void> setLastMessage(ChatModel chat, id) async {
+    String lastMsg = chat.text!;
+    String lastUpdatedTime = chat.time!.toIso8601String();
+    await _fstore.groupCollection.doc(id).set(
+        {"lastMssg": lastMsg, "lastUpdatedTime": lastUpdatedTime},
+        SetOptions(merge: true));
   }
 }
