@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -69,7 +70,11 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
                 children: [
                   GestureDetector(
                       onTap: viewModel.onViewProfile,
-                      child: const CircleAvatar()),
+                      child: CircleAvatar(
+                        backgroundImage: viewModel.currentUser?.photoURL != null
+                            ? NetworkImage(viewModel.currentUser!.photoURL!)
+                            : null,
+                      )),
                   Gap(10),
                   Text(
                     viewModel.username,
@@ -200,7 +205,11 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
             color: Colors.grey.shade200,
             child: ListTile(
               onTap: viewModel.openGroupDetails,
-              leading: CircleAvatar(),
+              leading: CircleAvatar(
+                backgroundImage: viewModel.selectedGroup!.dpUrl != null
+                    ? NetworkImage(viewModel.selectedGroup!.dpUrl!)
+                    : null,
+              ),
               title: Text(
                 viewModel.selectedGroup!.name!,
                 style: fontStyle.copyWith(fontSize: 16),
@@ -210,7 +219,7 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
                 style: fontStyle.copyWith(fontSize: 14),
               ),
               trailing: viewModel.isAMember(viewModel.selectedGroup!.members!)
-                  ? viewModel.isAmin
+                  ? viewModel.isAdmin
                       ? GestureDetector(
                           onTap: viewModel.showNewUserDialog,
                           child: Container(
@@ -252,83 +261,92 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
             height: 10,
           ),
           Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    opacity: 0.05,
-                    image: AssetImage("assets/bg.jpg"),
-                    fit: BoxFit.cover),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: SizedBox(
+              child: Stack(
                 children: [
-                  Builder(builder: (context) {
-                    if (viewModel.currChats.isNotEmpty) {
-                      return Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: viewModel.currChats.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ChatCard(
-                                  model: viewModel.currChats[index],
-                                  isUser: viewModel.currChats[index].sender ==
-                                      viewModel.currentUser,
-                                ),
-                              );
-                            }),
-                      );
-                    } else {
-                      return Center(
-                        child: Text(
-                          "Start a chat",
-                          style: fontStyle.copyWith(fontSize: 18),
-                        ),
-                      );
-                    }
-                  }),
-                  if (viewModel.isAMember(viewModel.selectedGroup!.members!))
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 10),
-                      child: SizedBox(
-                        child: Stack(
-                          children: [
-                            GTextField(
-                              hintText: "Message...",
-                              controller: viewModel.chatController,
+                  Opacity(
+                    opacity: 0.05,
+                    child: Image.asset(
+                      "assets/bg.jpg",
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Builder(builder: (context) {
+                        if (viewModel.currChats.isNotEmpty) {
+                          return Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: viewModel.currChats.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ChatCard(
+                                      model: viewModel.currChats[index],
+                                      isUser:
+                                          viewModel.currChats[index].sender ==
+                                              viewModel.currentUser!.email!,
+                                    ),
+                                  );
+                                }),
+                          );
+                        } else {
+                          return Center(
+                            child: Text(
+                              "Start a chat",
+                              style: fontStyle.copyWith(fontSize: 18),
                             ),
-                            Positioned(
-                                right: 5,
-                                bottom: 5,
-                                child: IconButton(
-                                    onPressed: viewModel.sendMessage,
-                                    icon: const Icon(Icons.send))),
-                          ],
+                          );
+                        }
+                      }),
+                      if (viewModel
+                          .isAMember(viewModel.selectedGroup!.members!))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 10),
+                          child: SizedBox(
+                            child: Stack(
+                              children: [
+                                GTextField(
+                                  hintText: "Message...",
+                                  controller: viewModel.chatController,
+                                ),
+                                Positioned(
+                                    right: 5,
+                                    bottom: 5,
+                                    child: IconButton(
+                                        onPressed: viewModel.sendMessage,
+                                        icon: const Icon(Icons.send))),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  if (!viewModel.isAMember(viewModel.selectedGroup!.members!))
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "You are not a member of the of this group",
-                            style: fontStyle.copyWith(
-                                fontSize: 16, color: Colors.green.shade800),
+                      if (!viewModel
+                          .isAMember(viewModel.selectedGroup!.members!))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "You are not a member of the of this group",
+                                style: fontStyle.copyWith(
+                                    fontSize: 16, color: Colors.green.shade800),
+                              ),
+                              Gap(10),
+                              GButton(
+                                title: "Join group",
+                                isBusy: viewModel.busy(viewModel.joinGroupDth),
+                                onPress: viewModel.joinGroup,
+                              ),
+                            ],
                           ),
-                          Gap(10),
-                          GButton(
-                            title: "Join group",
-                            isBusy: viewModel.busy(viewModel.joinGroupDth),
-                            onPress: viewModel.joinGroup,
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -358,7 +376,10 @@ class GroupCard extends StatelessWidget {
       children: [
         ListTile(
           onTap: onTap,
-          leading: CircleAvatar(),
+          leading: CircleAvatar(
+            backgroundImage:
+                model.dpUrl != null ? NetworkImage(model.dpUrl!) : null,
+          ),
           title: Text(
             model.name ?? "",
             style: fontStyle.copyWith(fontSize: 16),
@@ -464,28 +485,48 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.grey.shade500,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
+                Builder(builder: (context) {
+                  if (viewModel.selectedGroup!.dpUrl != null &&
+                      viewModel.groupDp == null) {
+                    return GestureDetector(
+                      onTap: viewModel.pickGroupDp,
+                      child: CachedNetworkImage(
+                        imageUrl: viewModel.selectedGroup!.dpUrl!,
+                        imageBuilder: (context, imageProvider) {
+                          return CircleAvatar(
+                            backgroundColor: Colors.grey.shade400,
+                            radius: 100,
+                            backgroundImage: imageProvider,
+                          );
+                        },
+                        fit: BoxFit.scaleDown,
+                        placeholder: (context, url) => const Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Center(child: CircularProgressIndicator()),
                         ),
-                        Text(
-                          "Add group Icon".toUpperCase(),
-                          style: fontStyle.copyWith(
-                              color: Colors.white, fontSize: 16),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: viewModel.isAdmin ? viewModel.pickGroupDp : null,
+                      child: CircleAvatar(
+                        radius: 100,
+                        backgroundColor: Colors.grey.shade500,
+                        backgroundImage: viewModel.groupDp != null
+                            ? MemoryImage(viewModel.groupDp!)
+                            : null,
+                        child: viewModel.isAdmin && viewModel.groupDp == null
+                            ? const Icon(
+                                Icons.camera_alt,
+                                size: 100,
+                                color: Colors.white,
+                              )
+                            : const Icon(Icons.people_alt_sharp,
+                                size: 100, color: Colors.white),
+                      ),
+                    );
+                  }
+                }),
                 Gap(10),
                 Text(
                   viewModel.selectedGroup!.name!,
@@ -601,9 +642,47 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Gap(40),
-                CircleAvatar(
-                  radius: 100,
-                ),
+                Builder(builder: (context) {
+                  if (viewModel.currentUser?.photoURL != null &&
+                      viewModel.userDp == null) {
+                    return GestureDetector(
+                      onTap: viewModel.pickUserDp,
+                      child: CachedNetworkImage(
+                        imageUrl: viewModel.currentUser!.photoURL!,
+                        imageBuilder: (context, imageProvider) {
+                          return CircleAvatar(
+                            backgroundColor: Colors.grey.shade400,
+                            radius: 100,
+                            backgroundImage: imageProvider,
+                          );
+                        },
+                        fit: BoxFit.scaleDown,
+                        placeholder: (context, url) => const Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: viewModel.pickUserDp,
+                      child: CircleAvatar(
+                        radius: 100,
+                        backgroundColor: Colors.grey.shade500,
+                        backgroundImage: viewModel.userDp != null
+                            ? MemoryImage(viewModel.userDp!)
+                            : null,
+                        child: viewModel.userDp == null
+                            ? const Icon(
+                                Icons.camera_alt,
+                                size: 100,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
+                    );
+                  }
+                }),
                 Gap(20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -36,31 +36,29 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController usernameController = TextEditingController();
 
   void login() async {
-    String res = await runBusyFuture(
+     await runBusyFuture(
         _auth.loginWithEmail(emailController.text, passwordController.text),
         busyObject: busyIdt);
     if (_auth.currentUser != null) {
-      _user.initCred(emailController.text);
-      await _user.getUserDetails();
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "Successful");
       _nav.replaceWith(Routes.homeScreen);
     } else {
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "failed");
     }
   }
 
   void register() async {
-    String res = await runBusyFuture(
-        _auth.registerWithEmail(emailController.text, passwordController.text),
+    var res = await runBusyFuture(
+        _auth.registerWithEmail(emailController.text, passwordController.text,
+            usernameController.text),
         busyObject: busyIdt);
-    if (_auth.currentUser != null) {
+    if (res != null) {
       _user.createUser(UserModel(
           email: emailController.text, username: usernameController.text));
-      _user.initCred(emailController.text);
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "Registration Successful");
       _nav.replaceWith(Routes.homeScreen);
     } else {
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "Invalid credentials");
     }
   }
 }

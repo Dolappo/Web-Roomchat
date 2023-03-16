@@ -29,6 +29,12 @@ class GroupRepo {
         .set({"members": members}, SetOptions(merge: true));
   }
 
+  Future<void> updateGroupDp(String url, String id) async {
+    await _fstore.groupCollection
+        .doc(id)
+        .set({"dpUrl": url}, SetOptions(merge: true));
+  }
+
   Stream<List<GroupChatModel>>? groupStream;
 
   Future<List<GroupChatModel>?> streamGroup(String user) async {
