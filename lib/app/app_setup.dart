@@ -3,11 +3,10 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/core/services/chat_service.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
 import 'package:web_groupchat/ui/screen/auth/auth_screen.dart';
-import 'package:web_groupchat/ui/screen/home_screen.dart';
-
+import 'package:web_groupchat/ui/screen/home/home_screen.dart';
 import '../core/services/auth_service.dart';
 import '../core/services/group_service.dart';
-import '../ui/screen/home_view_model.dart';
+import '../ui/screen/home/home_view_model.dart';
 
 @StackedApp(
   routes: [

@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.web_groupchat.web_groupchat">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
         android:label="web_groupchat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
