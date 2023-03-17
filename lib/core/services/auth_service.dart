@@ -1,8 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:web_groupchat/core/enum/auth_card.dart';
 
 class AuthService {
   final FirebaseAuth _fInstance = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+  void init() async {
+    GoogleSignInAccount? signInAccount = await _googleSignIn.signIn();
+    GoogleSignInAuthentication? signInAuthentication =
+        await signInAccount?.authentication;
+  }
+
+  Future<User?> signInWithGoogle() async {
+    User? user;
+    try {
+      UserCredential userCre = await _fInstance.signInWithPopup(authProvider);
+      user = userCre.user;
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+    return user;
+  }
 
   User? get currentUser => _fInstance.currentUser;
 

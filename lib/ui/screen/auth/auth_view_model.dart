@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/app/app_setup.router.dart';
 import 'package:web_groupchat/core/enum/auth_card.dart';
+import 'package:web_groupchat/core/enum/ui_enums/snackbar_type.dart';
 import 'package:web_groupchat/core/model/user_model.dart';
 import 'package:web_groupchat/core/services/auth_service.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
@@ -36,14 +37,25 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController usernameController = TextEditingController();
 
   void login() async {
-     await runBusyFuture(
+    await runBusyFuture(
         _auth.loginWithEmail(emailController.text, passwordController.text),
         busyObject: busyIdt);
     if (_auth.currentUser != null) {
-      _snack.showSnackbar(message: "Successful");
+      _snack.showCustomSnackBar(
+          message: "Successful", variant: SnackbarType.greenAndRed);
       _nav.replaceWith(Routes.homeScreen);
     } else {
       _snack.showSnackbar(message: "failed");
+    }
+  }
+
+  void signInWithGoogle() async {
+    var res = await _auth.signInWithGoogle();
+    if (res != null) {
+      _snack.showCustomSnackBar(
+          message: "Registration Successful",
+          variant: SnackbarType.greenAndRed);
+      _nav.replaceWith(Routes.homeScreen);
     }
   }
 
@@ -55,7 +67,9 @@ class AuthViewModel extends BaseViewModel {
     if (res != null) {
       _user.createUser(UserModel(
           email: emailController.text, username: usernameController.text));
-      _snack.showSnackbar(message: "Registration Successful");
+      _snack.showCustomSnackBar(
+          message: "Registration Successful",
+          variant: SnackbarType.greenAndRed);
       _nav.replaceWith(Routes.homeScreen);
     } else {
       _snack.showSnackbar(message: "Invalid credentials");
