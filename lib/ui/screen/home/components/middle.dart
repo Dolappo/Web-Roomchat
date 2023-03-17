@@ -169,11 +169,32 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
         ],
       );
     } else {
-      return Center(
-        child: Text(
-          "Welcome",
-          style: fontStyle.copyWith(fontSize: 44),
-        ),
+      return Stack(
+        children: [
+          Opacity(
+            opacity: 0.05,
+            child: Image.asset(
+              "assets/bg.jpg",
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/logo.png",
+                  height: 200,
+                ),
+                Text(
+                  "Join a group and start chatting",
+                  style: fontStyle.copyWith(fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
   }

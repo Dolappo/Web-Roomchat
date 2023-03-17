@@ -41,6 +41,11 @@ class AuthScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Image.asset(
+                        "assets/logo.png",
+                        height: 80,
+                      ),
+                      Gap(10),
                       Text(
                         model.currentPage == AuthCard.register
                             ? "Create an Account"
@@ -54,7 +59,7 @@ class AuthScreen extends StatelessWidget {
                       SizedBox(
                         width: 500,
                         child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
@@ -98,28 +103,38 @@ class AuthScreen extends StatelessWidget {
                                     : model.register,
                                 isBusy: model.busy(model.busyIdt)),
                             Gap(10),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Visibility(
-                                visible: model.currentPage == AuthCard.login,
-                                replacement: GestureDetector(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: model.signInWithGoogle,
                                   child: Text(
-                                    "Login here",
-                                    style: fontStyle.copyWith(
-                                        color: Colors.green.shade800,
-                                        fontSize: 16),
+                                    "Sign in with Google",
+                                    style: fontStyle.copyWith(fontSize: 18),
                                   ),
-                                  onTap: () => model.setPage(AuthCard.login),
                                 ),
-                                child: GestureDetector(
-                                  onTap: () => model.setPage(AuthCard.register),
-                                  child: Text("Register here",
+                                Visibility(
+                                  visible: model.currentPage == AuthCard.login,
+                                  replacement: GestureDetector(
+                                    child: Text(
+                                      "Login here",
                                       style: fontStyle.copyWith(
                                           color: Colors.green.shade800,
-                                          fontSize: 16)),
+                                          fontSize: 16),
+                                    ),
+                                    onTap: () => model.setPage(AuthCard.login),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        model.setPage(AuthCard.register),
+                                    child: Text("Register here",
+                                        style: fontStyle.copyWith(
+                                            color: Colors.green.shade800,
+                                            fontSize: 16)),
+                                  ),
                                 ),
-                              ),
-                            )
+                              ],
+                            ),
                           ],
                         ),
                       ),
