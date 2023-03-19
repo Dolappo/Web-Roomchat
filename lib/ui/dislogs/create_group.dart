@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:web_groupchat/ui/screen/home_view_model.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
 
 import '../../core/enum/chat_type.dart';
 import '../../setups/setup_dialog_ui.dart';
+import '../screen/home/home_view_model.dart';
 
 class CreateGroupDialog extends StatelessWidget {
   final DialogRequest request;
@@ -21,6 +21,9 @@ class CreateGroupDialog extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 300.0, vertical: 200),
       child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         child: ViewModelBuilder<HomeViewModel>.reactive(
             viewModelBuilder: () => HomeViewModel(),
             builder: (context, model, _) {
@@ -60,7 +63,9 @@ class CreateGroupDialog extends StatelessWidget {
                             title: "Create",
                             onPress: () async {
                               await model.createGroup();
-                              completer(DialogResponse(confirmed: true));
+                              completer(DialogResponse(
+                                confirmed: true,
+                              ));
                             },
                             isBusy: model.busy(model.createGroupDth),
                           ),

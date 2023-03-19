@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i5;
 import 'package:web_groupchat/ui/screen/auth/auth_screen.dart' as _i3;
-import 'package:web_groupchat/ui/screen/home_screen.dart' as _i2;
+import 'package:web_groupchat/ui/screen/home/home_screen.dart' as _i2;
 
 class Routes {
   static const homeScreen = '/';

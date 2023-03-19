@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/app/app_setup.router.dart';
 import 'package:web_groupchat/core/enum/auth_card.dart';
+import 'package:web_groupchat/core/enum/ui_enums/snackbar_type.dart';
 import 'package:web_groupchat/core/model/user_model.dart';
 import 'package:web_groupchat/core/services/auth_service.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
@@ -16,7 +17,7 @@ class AuthViewModel extends BaseViewModel {
   final _nav = locator<NavigationService>();
   final String busyIdt = "Busy";
 
-  bool isVisible = false;
+  bool isVisible = true;
 
   void toggleVisibility() {
     isVisible = !isVisible;
@@ -36,31 +37,42 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController usernameController = TextEditingController();
 
   void login() async {
-    String res = await runBusyFuture(
+    await runBusyFuture(
         _auth.loginWithEmail(emailController.text, passwordController.text),
         busyObject: busyIdt);
     if (_auth.currentUser != null) {
-      _user.initCred(emailController.text);
-      await _user.getUserDetails();
-      _snack.showSnackbar(message: res);
+      _snack.showCustomSnackBar(
+          message: "Successful", variant: SnackbarType.greenAndRed);
       _nav.replaceWith(Routes.homeScreen);
     } else {
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "failed");
+    }
+  }
+
+  void signInWithGoogle() async {
+    var res = await _auth.signInWithGoogle();
+    if (res != null) {
+      _snack.showCustomSnackBar(
+          message: "Registration Successful",
+          variant: SnackbarType.greenAndRed);
+      _nav.replaceWith(Routes.homeScreen);
     }
   }
 
   void register() async {
-    String res = await runBusyFuture(
-        _auth.registerWithEmail(emailController.text, passwordController.text),
+    var res = await runBusyFuture(
+        _auth.registerWithEmail(emailController.text, passwordController.text,
+            usernameController.text),
         busyObject: busyIdt);
-    if (_auth.currentUser != null) {
+    if (res != null) {
       _user.createUser(UserModel(
           email: emailController.text, username: usernameController.text));
-      _user.initCred(emailController.text);
-      _snack.showSnackbar(message: res);
+      _snack.showCustomSnackBar(
+          message: "Registration Successful",
+          variant: SnackbarType.greenAndRed);
       _nav.replaceWith(Routes.homeScreen);
     } else {
-      _snack.showSnackbar(message: res);
+      _snack.showSnackbar(message: "Invalid credentials");
     }
   }
 }

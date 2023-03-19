@@ -33,9 +33,9 @@ void setupSnackbarUi() {
   service.registerCustomSnackbarConfig(
     variant: SnackbarType.greenAndRed,
     config: SnackbarConfig(
-      backgroundColor: Colors.white,
-      titleColor: Colors.green,
-      messageColor: Colors.red,
+      backgroundColor: Colors.green,
+      titleColor: Colors.white60,
+      messageColor: Colors.white,
       borderRadius: 1,
     ),
   );

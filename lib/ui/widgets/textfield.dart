@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_groupchat/ui/screen/home_screen.dart';
+import 'package:web_groupchat/ui/screen/home/home_screen.dart';
 
 class GTextField extends StatelessWidget {
   final String? hintText;
@@ -40,7 +40,7 @@ class GTextField extends StatelessWidget {
           enabled: isEnabled,
           textInputAction: textInputAction,
           obscureText: obscureText,
-          style: fontStyle.copyWith(fontSize: 12, fontWeight: FontWeight.w600),
+          style: fontStyle.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
               disabledBorder: isBorder
                   ? OutlineInputBorder(

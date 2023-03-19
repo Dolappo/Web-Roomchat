@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:web_groupchat/ui/dislogs/add_member.dart';
 
 import '../../../app/app_setup.locator.dart';
 import '../core/enum/ui_enums/dialog_type.dart';
@@ -18,8 +19,14 @@ void setupDialogUi() {
           completer: completer,
         ),
     DialogType.createGroup: (context, sheetRequest,
-        Function(DialogResponse<GenericDialogResponse>) completer) =>
+            Function(DialogResponse<GenericDialogResponse>) completer) =>
         CreateGroupDialog(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.addMember: (context, sheetRequest,
+            Function(DialogResponse<GenericDialogResponse>) completer) =>
+        AddMember(
           request: sheetRequest,
           completer: completer,
         ),

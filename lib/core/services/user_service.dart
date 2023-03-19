@@ -1,37 +1,42 @@
+import 'dart:html' as html;
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:web_groupchat/app/app_setup.locator.dart';
 import 'package:web_groupchat/core/repo/user_repo.dart';
+import 'package:web_groupchat/core/services/auth_service.dart';
+import 'package:web_groupchat/core/services/firestore_service.dart';
 
 import '../model/user_model.dart';
 
-class UserService{
-   final UserRepo _userRepo = UserRepo();
-   UserModel? _user;
+class UserService {
+  final _auth = locator<AuthService>();
+  final UserRepo _userRepo = UserRepo();
+  final _store = FirestoreService();
 
-   UserModel? get user => _user;
+  String get email => _auth.currentUser!.email!;
+  String get username => _auth.currentUser!.displayName!;
 
-   // String _username = "";
-   String _email ="";
+  void createUser(UserModel user) async {
+    await _userRepo.createUser(user.email!, user);
+  }
 
-   void initCred(String email){
-      _email = email;
-   }
+  // void uploadDp(XFile file) async {
+  //   File img = File(file.path);
+  //   String path = img.path.split("/").last;
+  //   String? url = await _store.uploadImage(img, path, username: username);
+  //   if (url != null) {
+  //     _auth.updateUserPhotoUrl(url);
+  //     _auth.currentUser!.reload();
+  //   }
+  // }
 
-   // void initEMainEtUsername(String email, String username){
-   //    _email = email;
-   //    _username = username;
-   // }
-
-Future<void> getUserDetails() async{
-   _user =  await _userRepo.getUserDetails(_email);
-}
-
-void createUser(UserModel user) async{
-      print(user.email);
-  await _userRepo.createUser(user.email!, user);
-   getUserDetails();
-}
-
-// String get userId {
-// return username+email;
-// }
-
+  void uploadWebDp(Uint8List file) async {
+    String? url = await _store.uploadWebImage(file, username: username);
+    if (url != null) {
+      _auth.updateUserPhotoUrl(url);
+      _auth.currentUser!.reload();
+    }
+  }
 }
