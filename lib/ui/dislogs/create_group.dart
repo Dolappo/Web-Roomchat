@@ -58,6 +58,7 @@ class CreateGroupDialog extends StatelessWidget {
                                           .capitalize()))),
                               onChanged: (type) => model.onChangeType(type!)),
                         ),
+                        Gap(15),
                         Expanded(
                           child: GButton(
                             title: "Create",

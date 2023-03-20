@@ -102,9 +102,9 @@ class MessageStream extends ViewModelWidget<HomeViewModel> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: ChatCard(
                                       model: viewModel.currChats[index],
-                                      isUser:
-                                          viewModel.currChats[index].sender ==
-                                              viewModel.currentUser!.email!,
+                                      isUser: viewModel
+                                              .currChats[index].sender ==
+                                          viewModel.currentUser!.displayName!,
                                     ),
                                   );
                                 }),

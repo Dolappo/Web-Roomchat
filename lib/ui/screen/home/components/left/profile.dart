@@ -51,7 +51,7 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
                             backgroundImage: imageProvider,
                           );
                         },
-                        fit: BoxFit.scaleDown,
+                        fit: BoxFit.contain,
                         placeholder: (context, url) => const Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Center(child: CircularProgressIndicator()),

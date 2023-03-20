@@ -25,7 +25,9 @@ class GroupCard extends StatelessWidget {
           ),
           subtitle: Text(
             model.lastMssg ?? "-",
-            style: fontStyle.copyWith(fontSize: 16),
+            style: fontStyle.copyWith(fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
           trailing: Column(
             children: [

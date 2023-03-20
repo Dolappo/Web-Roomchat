@@ -17,8 +17,6 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
 
   @override
   Widget build(BuildContext context, viewModel) {
-    Color _randomColor =
-        Colors.primaries[Random().nextInt(Colors.primaries.length)];
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -32,6 +30,8 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
             )),
         padding: const EdgeInsets.all(10),
         child: Column(
+          crossAxisAlignment:
+              isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             if (!isUser)
               Padding(
@@ -39,14 +39,14 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
                 child: Text(
                   model.sender!,
                   textAlign: TextAlign.start,
-                  style: fontStyle.copyWith(fontSize: 12, color: _randomColor),
+                  style: fontStyle.copyWith(fontSize: 12, color: Colors.green),
                 ),
               ),
             Text(
               model.text!,
               style: fontStyle.copyWith(fontSize: 14, color: Colors.white),
             ),
-            Gap(10),
+            Gap(5),
             Text(
               model.time!.toTime(),
               style: fontStyle.copyWith(fontSize: 8, color: Colors.white54),
