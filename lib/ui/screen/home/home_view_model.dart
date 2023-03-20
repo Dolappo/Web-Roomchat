@@ -121,7 +121,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> sendMessage() async {
     ChatModel chat = ChatModel(
-      sender: _user.email,
+      sender: _user.username,
       text: chatController.text,
       time: DateTime.now(),
     );

@@ -38,7 +38,8 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
               children: [
                 Builder(builder: (context) {
                   if (viewModel.selectedGroup!.dpUrl != null &&
-                      viewModel.groupDp == null) {
+                      viewModel.groupDp == null &&
+                      viewModel.isAdmin) {
                     return GestureDetector(
                       onTap: viewModel.pickGroupDp,
                       child: CachedNetworkImage(
@@ -57,23 +58,33 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
                         ),
                       ),
                     );
+                  } else if (viewModel.selectedGroup!.dpUrl == null &&
+                      viewModel.isAdmin) {
+                    return GestureDetector(
+                      onTap: viewModel.pickGroupDp,
+                      child: CircleAvatar(
+                        radius: 100,
+                        backgroundColor: Colors.grey.shade500,
+                        backgroundImage: viewModel.groupDp == null
+                            ? null
+                            : MemoryImage(viewModel.groupDp!),
+                        child: viewModel.groupDp != null
+                            ? null
+                            : const Icon(Icons.camera_alt,
+                                size: 100, color: Colors.white),
+                      ),
+                    );
                   } else {
                     return GestureDetector(
-                      onTap: viewModel.isAdmin ? viewModel.pickGroupDp : null,
+                      onTap: null,
                       child: CircleAvatar(
                         radius: 100,
                         backgroundColor: Colors.grey.shade500,
                         backgroundImage: viewModel.groupDp != null
                             ? MemoryImage(viewModel.groupDp!)
                             : null,
-                        child: viewModel.isAdmin && viewModel.groupDp == null
-                            ? const Icon(
-                                Icons.camera_alt,
-                                size: 100,
-                                color: Colors.white,
-                              )
-                            : const Icon(Icons.people_alt_sharp,
-                                size: 100, color: Colors.white),
+                        child: const Icon(Icons.people_alt_sharp,
+                            size: 100, color: Colors.white),
                       ),
                     );
                   }
