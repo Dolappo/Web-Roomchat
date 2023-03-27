@@ -71,6 +71,8 @@ class GroupService {
   }
 
   String get groupId {
-    return _user.email + _groupName.split(" ").last.toLowerCase();
+    return _user.email +
+        _groupName.split(" ").last.toLowerCase() +
+        DateTime.now().toIso8601String().split(".").last;
   }
 }

@@ -22,16 +22,6 @@ class UserService {
     await _userRepo.createUser(user.email!, user);
   }
 
-  // void uploadDp(XFile file) async {
-  //   File img = File(file.path);
-  //   String path = img.path.split("/").last;
-  //   String? url = await _store.uploadImage(img, path, username: username);
-  //   if (url != null) {
-  //     _auth.updateUserPhotoUrl(url);
-  //     _auth.currentUser!.reload();
-  //   }
-  // }
-
   void uploadWebDp(Uint8List file) async {
     String? url = await _store.uploadWebImage(file, username: username);
     if (url != null) {
