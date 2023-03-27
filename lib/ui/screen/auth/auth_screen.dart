@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
 import 'package:web_groupchat/ui/screen/auth/auth_view_model.dart';
@@ -8,7 +9,7 @@ import 'package:web_groupchat/ui/widgets/textfield.dart';
 
 import '../../../core/enum/auth_card.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends HookWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
   @override
@@ -30,13 +31,6 @@ class AuthScreen extends StatelessWidget {
                 Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  // decoration: const BoxDecoration(
-                  //   image: DecorationImage(
-                  //       opacity: 0.05,
-                  //       image: AssetImage("assets/bg.jpg"),
-                  //       fit: BoxFit.cover),
-                  // ),
-                  // padding: EdgeInsets.symmetric(horizontal: 120),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -11,9 +11,10 @@ ChatModel _$ChatModelFromJson(Map<String, dynamic> json) => ChatModel(
       sender: json['sender'] as String?,
       time:
           json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    );
+    )..id = json['id'] as String?;
 
 Map<String, dynamic> _$ChatModelToJson(ChatModel instance) => <String, dynamic>{
+      'id': instance.id,
       'text': instance.text,
       'time': instance.time?.toIso8601String(),
       'sender': instance.sender,
