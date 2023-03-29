@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
+
 import 'components/left/chat_lists.dart';
 import 'components/left/profile.dart';
 import 'components/middle.dart';

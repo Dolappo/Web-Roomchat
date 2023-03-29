@@ -1,8 +1,5 @@
-import 'dart:html' as html;
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:web_groupchat/app/app_setup.locator.dart';
 import 'package:web_groupchat/core/repo/user_repo.dart';
 import 'package:web_groupchat/core/services/auth_service.dart';

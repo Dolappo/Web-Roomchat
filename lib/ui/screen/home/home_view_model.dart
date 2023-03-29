@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
@@ -11,6 +12,7 @@ import 'package:web_groupchat/core/services/auth_service.dart';
 import 'package:web_groupchat/core/services/group_service.dart';
 import 'package:web_groupchat/core/services/image_picker_service.dart';
 import 'package:web_groupchat/core/services/user_service.dart';
+
 import '../../../core/model/chat.dart';
 import '../../../core/model/chat_model.dart';
 import '../../../core/services/chat_service.dart';
