@@ -1,5 +1,5 @@
-import 'dart:typed_data';
 import 'dart:html' as html;
+import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stacked/stacked.dart';
+
 import '../../home_screen.dart';
 import '../../home_view_model.dart';
 

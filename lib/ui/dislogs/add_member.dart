@@ -5,8 +5,6 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:web_groupchat/ui/widgets/button.dart';
 import 'package:web_groupchat/ui/widgets/textfield.dart';
 
-import '../../app/app_setup.locator.dart';
-import '../../core/enum/chat_type.dart';
 import '../../setups/setup_dialog_ui.dart';
 import '../screen/home/home_view_model.dart';
 
