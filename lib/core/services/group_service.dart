@@ -6,12 +6,10 @@ import 'package:web_groupchat/core/services/user_service.dart';
 
 import '../../app/app_setup.locator.dart';
 import '../model/chat_model.dart';
-import 'auth_service.dart';
 import 'firestore_service.dart';
 
 class GroupService {
   final _gRepo = GroupRepo();
-  final _auth = locator<AuthService>();
   final _user = locator<UserService>();
   final _store = FirestoreService();
 

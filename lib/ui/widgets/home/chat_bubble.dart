@@ -44,7 +44,7 @@ class ChatCard extends ViewModelWidget<HomeViewModel> {
               model.text!,
               style: fontStyle.copyWith(fontSize: 14, color: Colors.white),
             ),
-            Gap(5),
+            const Gap(5),
             Text(
               model.time!.toTime(),
               style: fontStyle.copyWith(fontSize: 8, color: Colors.white54),

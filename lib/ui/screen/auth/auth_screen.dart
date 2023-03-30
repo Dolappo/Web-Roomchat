@@ -28,7 +28,7 @@ class AuthScreen extends HookWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -39,7 +39,7 @@ class AuthScreen extends HookWidget {
                         "assets/logo.png",
                         height: 80,
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Text(
                         model.currentPage == AuthCard.register
                             ? "Create an Account"
@@ -49,7 +49,7 @@ class AuthScreen extends HookWidget {
                             fontSize: 40,
                             fontWeight: FontWeight.w700),
                       ),
-                      Gap(5),
+                      const Gap(5),
                       SizedBox(
                         width: 500,
                         child: Column(
@@ -63,7 +63,7 @@ class AuthScreen extends HookWidget {
                                 controller: model.usernameController,
                               ),
                             ),
-                            Gap(10),
+                            const Gap(10),
                             GTextField(
                               hintText: "Email",
                               controller: model.emailController,
@@ -96,7 +96,7 @@ class AuthScreen extends HookWidget {
                                     ? model.login
                                     : model.register,
                                 isBusy: model.busy(model.busyIdt)),
-                            Gap(10),
+                            const Gap(10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

@@ -41,7 +41,7 @@ class GroupCard extends StatelessWidget {
             ],
           ),
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }

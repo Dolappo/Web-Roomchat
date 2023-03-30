@@ -18,13 +18,13 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
           Container(
             height: 60,
             color: Colors.grey.shade200,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Row(
               children: [
                 IconButton(
                     onPressed: viewModel.closeProfile,
                     icon: const Icon(Icons.arrow_back)),
-                Gap(10),
+                const Gap(10),
                 Text(
                   "Profile",
                   style: fontStyle,
@@ -37,7 +37,7 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Gap(40),
+                const Gap(40),
                 Builder(builder: (context) {
                   if (viewModel.currentUser?.photoURL != null &&
                       viewModel.userDp == null) {
@@ -79,7 +79,7 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
                     );
                   }
                 }),
-                Gap(20),
+                const Gap(20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -88,15 +88,15 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
                       style: fontStyle.copyWith(
                           color: Colors.green.shade800, fontSize: 12),
                     ),
-                    Gap(10),
+                    const Gap(10),
                     Text(
                       viewModel.username,
                       style: fontStyle.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
-                Divider(),
-                Gap(10),
+                const Divider(),
+                const Gap(10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,7 +105,7 @@ class ProfileBox extends ViewModelWidget<HomeViewModel> {
                       style: fontStyle.copyWith(
                           color: Colors.green.shade800, fontSize: 12),
                     ),
-                    Gap(10),
+                    const Gap(10),
                     Text(
                       "This is about the user",
                       style: fontStyle.copyWith(fontSize: 16),

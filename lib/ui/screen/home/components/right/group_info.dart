@@ -16,8 +16,7 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
       children: [
         Container(
           height: 65,
-          padding: EdgeInsets.all(10),
-          // color: Colors.grey.shade200,
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               IconButton(
@@ -89,7 +88,7 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
                     );
                   }
                 }),
-                Gap(10),
+                const Gap(10),
                 Text(
                   viewModel.selectedGroup!.name!,
                   style: fontStyle,
@@ -102,7 +101,7 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
             ),
           ),
         ),
-        Gap(10),
+        const Gap(10),
         Expanded(
           child: Card(
             child: Padding(
@@ -125,14 +124,14 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
                       )
                     ],
                   ),
-                  Divider(),
-                  Gap(15),
+                  const Divider(),
+                  const Gap(15),
                   Text(
                     "Members",
                     style: fontStyle.copyWith(
                         color: Colors.green.shade800, fontSize: 18),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: List.generate(
@@ -149,8 +148,8 @@ class GroupInfoBox extends ViewModelWidget<HomeViewModel> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(color: Colors.grey)),
-                                    padding: EdgeInsets.all(8),
-                                    margin: EdgeInsets.only(left: 8),
+                                    padding: const EdgeInsets.all(8),
+                                    margin: const EdgeInsets.only(left: 8),
                                     child: Text(
                                       "Admin",
                                       style: fontStyle.copyWith(

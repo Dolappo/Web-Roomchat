@@ -6,8 +6,6 @@ import 'package:image_picker_web/image_picker_web.dart';
 
 class ImagePickerService {
   final ImagePicker _picker = ImagePicker();
-  html.File? _imageFile;
-  String? _imageUrl;
 
   Future<XFile?> pickImage() async {
     XFile? selectedImg;
@@ -17,6 +15,7 @@ class ImagePickerService {
       return selectedImg;
     } else {
       print("No file selected");
+      return null;
     }
   }
 

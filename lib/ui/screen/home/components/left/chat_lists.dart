@@ -31,19 +31,19 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
                             ? NetworkImage(viewModel.currentUser!.photoURL!)
                             : null,
                       )),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     viewModel.username,
                     style: fontStyle.copyWith(fontSize: 18),
                   ),
                 ],
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
             ],
           ),
         ),
       ),
-      Gap(5),
+      const Gap(5),
       Expanded(
         child: SizedBox(
           child: SingleChildScrollView(
@@ -58,7 +58,6 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
                       StreamBuilder<List<GroupChatModel>>(
                           stream: viewModel.groupStream,
                           builder: (context, snapshot) {
-                            print(snapshot.data?.first.created);
                             if (snapshot.data != null) {
                               if (snapshot.hasData) {
                                 List<GroupChatModel> data = snapshot.data!;
@@ -107,14 +106,14 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
                               );
                             }
                           }),
-                      Gap(20),
+                      const Gap(20),
                       GButton(
                         title: "Create Group",
                         onPress: viewModel.showCreateDialog,
                       ),
                     ],
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "Public Groups",
                     style: fontStyle.copyWith(
@@ -122,8 +121,8 @@ class ChatList extends ViewModelWidget<HomeViewModel> {
                         fontSize: 20,
                         fontWeight: FontWeight.w600),
                   ),
-                  Divider(),
-                  Gap(5),
+                  const Divider(),
+                  const Gap(5),
                   Column(
                     children:
                         List.generate(viewModel.publicGroups.length, (index) {
