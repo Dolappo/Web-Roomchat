@@ -2,6 +2,9 @@
 
 A simple Desktop room chat with Flutter and Firebase
 
+Try it out here
+https://web-groupchat.web.app/#/
+
 This is what it looks like...
 
 ![Screenshot 2023-04-06 at 10 57 05 PM](https://user-images.githubusercontent.com/83093616/230501661-5295ff15-faad-438f-bd36-d9589c754a31.png)
